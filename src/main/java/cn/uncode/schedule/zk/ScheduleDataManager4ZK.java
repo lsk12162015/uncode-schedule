@@ -61,6 +61,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 		if (this.getZooKeeper().exists(this.pathServer, false) == null) {
 			ZKTools.createPath(getZooKeeper(),this.pathServer, CreateMode.PERSISTENT, this.zkManager.getAcl());
 		}
+		//计算zookeeper服务器时间与本地时间差
 		loclaBaseTime = System.currentTimeMillis();
         String tempPath = this.zkManager.getZooKeeper().create(this.zkManager.getRootPath() + "/systime",null, this.zkManager.getAcl(), CreateMode.EPHEMERAL_SEQUENTIAL);
         Stat tempStat = this.zkManager.getZooKeeper().exists(tempPath, false);
@@ -147,22 +148,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 			}
 		}
 	}
-	
-	public List<String> loadScheduleServerNames(String taskType)throws Exception {
-		String zkPath = this.pathServer;
-		if (this.getZooKeeper().exists(zkPath, false) == null) {
-			return new ArrayList<String>();
-		}
-		List<String> serverList = this.getZooKeeper().getChildren(zkPath, false);
-		Collections.sort(serverList, new Comparator<String>() {
-			public int compare(String u1, String u2) {
-				return u1.substring(u1.lastIndexOf("$") + 1).compareTo(
-						u2.substring(u2.lastIndexOf("$") + 1));
-			}
-		});
-		return serverList;
-	}
-	
+
 	public List<String> loadScheduleServerNames() throws Exception {
 		String zkPath = this.pathServer;
 		if (this.getZooKeeper().exists(zkPath, false) == null) {
