@@ -217,7 +217,7 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 	}
 	
 	public void checkLocalTask() throws Exception {
-		// 检查系统任务执行情况
+		// 检查本地任务执行情况
 		scheduleDataManager.checkLocalTask(this.currenScheduleServer.getUuid());
 	}
 
